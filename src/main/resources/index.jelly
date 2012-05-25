@@ -1,0 +1,6 @@
+<!--
+  This view is used to render the installed plugins page.
+-->
+<div>
+  This plugin add action delete log to build page. If the build is build of matrix job, the action delete log for all its configurations too.
+</div>
