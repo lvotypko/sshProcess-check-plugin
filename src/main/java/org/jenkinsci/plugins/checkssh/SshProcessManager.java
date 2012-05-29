@@ -4,6 +4,7 @@ import hudson.Extension;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.Hudson;
+import hudson.model.TaskListener;
 import hudson.util.ProcessTree;
 import hudson.util.ProcessTree.OSProcess;
 import java.io.IOException;
@@ -71,9 +72,18 @@ public class SshProcessManager implements Describable<SshProcessManager>{
      * 
      * @return true if the process was killed, false if not.
      */
-    public boolean killSshProcesses(OSProcess process) throws InterruptedException{    
-        process.killRecursively(); 
-        return ProcessTree.get().get(process.getPid())!=null;
+    public boolean killSshProcess(OSProcess process) throws InterruptedException, IOException{  
+        int pid = process.getPid();
+        String command ="kill -s 9 "+pid;
+        String arguments[] = command.split(" ");
+        ProcessBuilder pb = new ProcessBuilder(arguments);
+        Process p = pb.start();
+        for(int i=0;i<5;i++){ 
+            if(ProcessTree.get().get(pid)==null)
+                return true;
+            Thread.sleep(100);// wait for command excution
+        }
+        return false;
     }
 
     public Descriptor<SshProcessManager> getDescriptor() {

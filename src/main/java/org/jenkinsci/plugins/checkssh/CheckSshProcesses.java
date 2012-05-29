@@ -39,7 +39,7 @@ public class CheckSshProcesses extends ComputerListener {
             for (OSProcess process : processes) {
                 taskListener.getLogger().println("Process " + process.getPid() + " with arguments " + process.getArguments() + "was founded");
                 taskListener.getLogger().println("Trying to kill process");
-                if (!manager.killSshProcesses(process)) {
+                if (!manager.killSshProcess(process)) {
                     taskListener.getLogger().println("Attempt to kill a process with UID " + process.getPid() + " was not successful");
                 } else {
                     taskListener.getLogger().println("Process " + process.getPid() + " was killed");
@@ -94,7 +94,7 @@ public class CheckSshProcesses extends ComputerListener {
                     if(host!=null){
                         try {
                             for (OSProcess process : manager.getSshProcessForSlave(host)) {
-                                manager.killSshProcesses(process);
+                                manager.killSshProcess(process);
                             }
                         } catch (IOException ex) {
                             Logger.getLogger(CheckSshProcesses.class.getName()).log(Level.SEVERE, null, ex);
